@@ -1,0 +1,24 @@
+body {
+	margin: 0px;
+}
+
+#viewport
+{
+	background: #000000;
+	position: relative;
+	width: 500px;
+	height: 400px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 50px;
+	-webkit-perspective: 1000;
+	-webkit-transform-style: preserve-3d;
+}
+
+#groundPlane
+{
+	background: white;
+	
+	width: 100px;
+	height: 100px;
+}
