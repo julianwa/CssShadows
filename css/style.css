@@ -1,24 +1,42 @@
 body {
 	margin: 0px;
+	background: black;
 }
 
 #viewport
 {
-	background: #000000;
-	position: relative;
+	background: white;
 	width: 500px;
 	height: 400px;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 50px;
-	-webkit-perspective: 1000;
-	-webkit-transform-style: preserve-3d;
+	-webkit-perspective: 3000px;
+/*	-webkit-transform-style: preserve-3d;*/
 }
 
 #groundPlane
 {
-	background: white;
+	position: absolute;
+	z-index: 1;	
+	background: red;
 	
-	width: 100px;
-	height: 100px;
+	width: 100%;
+	height: 500%;
+}
+
+.manAndShadow
+{
+	position: absolute;
+	width: 40%
+}
+
+#shadow
+{
+	z-index: 2;
+}
+
+#man
+{
+	z-index: 3;
 }
