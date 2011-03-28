@@ -36,6 +36,8 @@ var groundPlane = document.getElementById("groundPlane");
 var man = document.getElementById("man");
 var shadow = document.getElementById("shadow");
 
+var manPositionX = 0;
+
 var applyWorldTransform = function(elem, worldTransform) {
 	
 	var transform = mat4.create();
@@ -46,18 +48,47 @@ var applyWorldTransform = function(elem, worldTransform) {
 	mat4.multiply(transform, worldTransform);
 	
 	elem.style["-webkit-transform"] = mat4.cssStr(transform);
-}
+};
 
-var groundPlaneWorldTransform = mat4.create();
-mat4.identity(groundPlaneWorldTransform);
-mat4.translate(groundPlaneWorldTransform, [0, viewport.clientHeight / 2, 0]);
-mat4.rotateX(groundPlaneWorldTransform, 1.5);
-mat4.translate(groundPlaneWorldTransform, [0, -groundPlane.clientHeight / 2, 0]);
-applyWorldTransform(groundPlane, groundPlaneWorldTransform);
+var planeFromWorldTransform = function(worldTransform) {
+	
+	var worldTransformInverseTranspose = mat4.create(worldTransform);
+	mat4.inverse(worldTransformInverseTranspose);
+	mat4.transpose(worldTransformInverseTranspose);
 
-var manWorldTransform = mat4.create();
-mat4.identity(manWorldTransform);
-applyWorldTransform(man, manWorldTransform);
+	var planeNormal = vec3.create();
+	mat4.multiplyVec3(worldTransformInverseTranspose, [0, 0, 1], planeNormal);
+	
+	var planePoint = vec3.create();
+	mat4.multiplyVec3(worldTransform, [0, 0, 0], planePoint);
+	
+	return vec4.create([planeNormal[0], planeNormal[1], planeNormal[2], -vec3.dot(planeNormal, planePoint));
+};
 
-mat4.projectOntoPlane(manWorldTransform, [100, 0, 30], [0, 0, 1, 3]);
-applyWorldTransform(shadow, manWorldTransform);
+var updateTransforms = function() {
+
+	var groundPlaneWorldTransform = mat4.create();
+	mat4.identity(groundPlaneWorldTransform);
+	mat4.translate(groundPlaneWorldTransform, [0, viewport.clientHeight / 2, 0]);
+	mat4.rotateX(groundPlaneWorldTransform, 1.4);
+	mat4.translate(groundPlaneWorldTransform, [0, -groundPlane.clientHeight / 2, 0]);
+	applyWorldTransform(groundPlane, groundPlaneWorldTransform);
+
+	var plane = planeFromWorldTransform(groundPlaneWorldTransform);
+
+	var manWorldTransform = mat4.create();
+	mat4.identity(manWorldTransform);
+	mat4.translate(manWorldTransform, [manPositionX, 100, 0]);
+	applyWorldTransform(man, manWorldTransform);
+
+	mat4.projectOntoPlane(manWorldTransform, [100, 10, 2000], plane);
+	applyWorldTransform(shadow, manWorldTransform);
+};
+
+var onKeyPress = function() {
+	
+	manPositionX += 10;
+	updateTransforms();
+};
+
+updateTransforms();

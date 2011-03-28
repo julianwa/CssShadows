@@ -343,6 +343,35 @@ vec3.str = function(vec) {
 };
 
 /*
+ * vec4 - 4 Dimensional Vector
+ */
+var vec4 = {};
+
+/*
+ * vec4.create
+ * Creates a new instance of a vec3 using the default array type
+ * Any javascript array containing at least 4 numeric elements can serve as a vec4
+ *
+ * Params:
+ * vec - Optional, vec4 containing values to initialize with
+ *
+ * Returns:
+ * New vec4
+ */
+vec4.create = function(vec) {
+	var dest = new glMatrixArrayType(4);
+	
+	if(vec) {
+		dest[0] = vec[0];
+		dest[1] = vec[1];
+		dest[2] = vec[2];
+		dest[3] = vec[3];
+	}
+	
+	return dest;
+};
+
+/*
  * mat3 - 3x3 Matrix
  */
 var mat3 = {};
