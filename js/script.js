@@ -62,7 +62,7 @@ var planeFromWorldTransform = function(worldTransform) {
 	var planePoint = vec3.create();
 	mat4.multiplyVec3(worldTransform, [0, 0, 0], planePoint);
 	
-	return vec4.create([planeNormal[0], planeNormal[1], planeNormal[2], -vec3.dot(planeNormal, planePoint));
+	return vec4.create([planeNormal[0], planeNormal[1], planeNormal[2], -vec3.dot(planeNormal, planePoint)]);
 };
 
 var updateTransforms = function() {
